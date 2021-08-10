@@ -598,6 +598,7 @@ class NikeGen {
             });
         } else {
             let smsCountry = this.returnCountry(this.taskCountry);
+            console.log(smsCountry);
             Object.keys(this.nikeCountries).forEach(key => {
                 if (markedCountriesSms.includes(key.split('|')[1])) {
                     if (smsCountry.toLowerCase() == key.split('|')[1].toLowerCase()) {
@@ -813,6 +814,9 @@ class NikeGen {
                 gennedUa = this.validArr[Math.floor(Math.random() * (this.validArr.length - 0) + 0)]
             };
 
+            // Default null for now
+            gennedUa == null;
+
             // Mention user agent
             console.log(chalk.yellow(`* ${chalk.magenta(`[Task ${this.taskNum}]`)} Using User-Agent: ${chalk.green(gennedUa)}`));
 
@@ -993,6 +997,7 @@ class NikeGen {
                 await this.genMact(this.curPage);
                 curPos = await this.genMact(this.curPage);
             } catch(err) {
+                console.log(err);
                 console.log(chalk.red(`* ${chalk.magenta(`[Task ${this.taskNum}]`)} Error while navigating to homepage!`));
                 await this.curPage.close();
             };
