@@ -446,69 +446,45 @@ class NikeGen {
         this.user420failed.send(embed);
     };
 
+    // Simple mouse movement routine
     async genMact(page) {
 
         // Event Declaration
-        let halfFrom;
-        let basisEvents= [];
-        let startEventsPt1 = [];
-        let startEventsPt2 = [];
-        let endEvents = [];
-        let finalEvents = [];
+        let firstEvents = []
+        let firstSubEvents = []
+        let secondEvents = []
+        let secondSubEvents = []
+        let lastEvents = []
 
-        // Random delay
-        let delayNum = Math.floor(Math.random() * (15 - 8) - 8); 
+        // Creating firstEvents | firstSubEvents
+        let firstfrom = { x: Math.random() * (this.viewWidth - 0) + 0, y: Math.random() * (this.viewHeight - 0) + 0 };
+        let firstTo = { x: Math.random() * (this.viewWidth - 0) + 0, y: Math.random() * (this.viewHeight - 0) + 0 };
+        let firstSubTo = { x: firstTo.x / 2, y: firstTo.y / 2 };
+        firstEvents = ghost.path(firstfrom, firstTo);
+        firstSubEvents = ghost.path(firstTo, firstSubTo);
+        
+        // Creating secondEvents | secondSubEvents
+        let secondTo = { x: Math.random() * (this.viewWidth - 0) + 0, y: Math.random() * (this.viewHeight - 0) + 0 };
+        let secondSubTo = { x: secondTo.x / 2, y: secondTo.y / 2 };
+        secondEvents = ghost.path(firstSubTo, secondTo);
+        secondSubEvents = ghost.path(secondTo, secondSubTo);
 
-        // Generate from/to points
-        let from = { 
-            x: Math.random() * (this.viewWidth - 0) + 0,
-            y: Math.random() * (this.viewHeight - 0) + 0
+        // Creating last events
+        let lastTo = { x: Math.random() * (this.viewWidth - 0) + 0, y: Math.random() * (this.viewHeight - 0) + 0 };
+        lastEvents = ghost.path(secondSubTo, lastTo);
+
+        // Execute first and first sub events
+        for (let i = 0; i < firstEvents.length; i++) {
+            await delay(Math.floor(Math.random() * (10 - 0) + 0));
+            await page.mouse.move(firstEvents[i].x, firstEvents[i].y);
         };
-        let to = {
-            x: Math.random() * (this.viewWidth - 0) + 0,
-            y: Math.random() * (this.viewHeight - 0) + 0
-        };
-
-        // Gen basis points and half starting point
-        basisEvents = ghost.path(from, to);
-        halfFrom = basisEvents[Math.floor((basisEvents.length - 1) / 2)];
-        startEventsPt1 = ghost.path(from, halfFrom);
-        startEventsPt2 = ghost.path(halfFrom, from);
-        endEvents = ghost.path(from, to);
-        finalEvents = ghost.path(to, from);
-
-        // Execute starting points pt1
-        for (let i = 0; i < startEventsPt1.length; i++) {
-            await delay(delayNum);
-            await page.mouse.move(startEventsPt1[i].x, startEventsPt1[i].y);
+        for (let i = 0; i < firstSubEvents.length; i++) {
+            await delay(Math.floor(Math.random() * (10 - 0) + 0));
+            await page.mouse.move(firstSubEvents[i].x, firstSubEvents[i].y);
         };
         
-        // Execute starting points pt2
-        for (let i = 0; i < startEventsPt2.length; i++) {
-            await delay(delayNum);
-            await page.mouse.move(startEventsPt2[i].x, startEventsPt2[i].y);
-        };
-        
-        // Execute basis points
-        for (let i = 0; i< basisEvents.length; i++) {
-            await delay(delayNum);
-            await page.mouse.move(basisEvents[i].x, basisEvents[i].y);
-        };
-
-        // Execute ending points
-        for (let i = 0; i< endEvents.length; i++) {
-            await delay(delayNum);
-            await page.mouse.move(endEvents[i].x, endEvents[i].y);
-        };
-
-        // Execute ending points
-        for (let i = 0; i< finalEvents.length; i++) {
-            await delay(delayNum);
-            await page.mouse.move(finalEvents[i].x, finalEvents[i].y);
-        };
-
-        // Return last point
-        return { x: finalEvents[finalEvents.length - 1].x, y: finalEvents[finalEvents.length - 1].y };
+        // Return last position
+        return { x: firstSubEvents[Math.floor(Math.random() * (firstSubEvents.length - 0) + 0)].x, y: firstSubEvents[Math.floor(Math.random() * (firstSubEvents.length - 0) + 0)].y };
 
     };
 
@@ -679,12 +655,17 @@ class NikeGen {
         let phoneNumber;
         let firstPos, secondPos, thirdPos, fourthPos;
 
+        // Create cursor
+        let cursor = ghost.createCursor(page);
+
         // Navigate top account settings
         await page.goto('https://www.nike.com/member/settings');
         await page.waitForSelector('[class="ncss-cta-primary-dark "]', { timeout: 5000 });
-        firstPos = await this.humanClick(page, `[class="ncss-cta-primary-dark "]`, { x: Math.random() * (this.viewWidth - 0) + 0, y: Math.random() * (this.viewHeight - 0) + 0 });
+        // firstPos = await this.humanClick(page, `[class="ncss-cta-primary-dark "]`, { x: Math.random() * (this.viewWidth - 0) + 0, y: Math.random() * (this.viewHeight - 0) + 0 });
+        await cursor.click('button[class="ncss-cta-primary-dark "]')
         await page.waitForSelector(`[aria-label="Add Mobile Number"]`, { timeout: 5000 });
-        secondPos = await this.humanClick(page, '/html/body/div[3]/div/div[3]/div[2]/div/div/form/div[2]/div[4]/div/div/div/div[2]/button', firstPos);
+        // secondPos = await this.humanClick(page, '/html/body/div[3]/div/div[3]/div[2]/div/div/form/div[2]/div[4]/div/div/div/div[2]/button', firstPos);
+        await cursor.click('/html/body/div[3]/div/div[3]/div[2]/div/div/form/div[2]/div[4]/div/div/div/div[2]/button')
 
         // Purchase number
         if (this.apiService == '5sim') {
@@ -1009,56 +990,59 @@ class NikeGen {
             try {
                 console.log(chalk.yellow(`* ${chalk.magenta(`[Task ${this.taskNum}]`)} Submitting email address...`));
                 await this.curPage.waitForSelector(`[placeholder="Email address"]`, { timeout: 5000 });
-                firstPos = await this.humanClick(this.curPage, '/html/body/div[4]/div/div/div/div[5]/form/div[1]/input', curPos);
-                await this.curPage.keyboard.type(this.emailAddr, { delay: Math.floor(Math.random() * (20 - 10) + 10) });
+                await this.curPage.$eval('input[placeholder="Email address"]', (el, email) => el.value = email, this.emailAddr);
+                // firstPos = await this.humanClick(this.curPage, '/html/body/div[4]/div/div/div/div[5]/form/div[1]/input', curPos);
+                // await this.curPage.keyboard.type(this.emailAddr, { delay: Math.floor(Math.random() * (20 - 10) + 10) });
                 console.log(chalk.green(`* ${chalk.magenta(`[Task ${this.taskNum}]`)} Email has been submitted!`));
             } catch(err) {
                 console.log(chalk.red(`* ${chalk.magenta(`[Task ${this.taskNum}]`)} Error while submitting email address!`));
                 await this.curPage.close();
             };
-
+            
             // Attempt to submit password
             try {
                 console.log(chalk.yellow(`* ${chalk.magenta(`[Task ${this.taskNum}]`)} Submitting password...`));
                 await this.curPage.waitForSelector('[placeholder="Password"]', { timeout: 5000 });
-                await this.curPage.keyboard.press('Tab');
-                await this.curPage.keyboard.type(this.passWrd, { delay: Math.floor(Math.random() * (20 - 10) + 10) });
+                await this.curPage.$eval('input[placeholder="Password"]', (el, password) => el.value = password, this.passWrd);
+                // await this.curPage.keyboard.press('Tab');
+                // await this.curPage.keyboard.type(this.passWrd, { delay: Math.floor(Math.random() * (20 - 10) + 10) });
                 console.log(chalk.green(`* ${chalk.magenta(`[Task ${this.taskNum}]`)} Password submitted!`));
             } catch(err) {
                 console.log(chalk.red(`* ${chalk.magenta(`[Task ${this.taskNum}]`)} Error while submitting password!`));
                 await this.curPage.close();
             };
-
+            
             // Attempt to submit first name
             try {
                 console.log(chalk.yellow(`* ${chalk.magenta(`[Task ${this.taskNum}]`)} Submitting first name...`));
                 await this.curPage.waitForSelector(`[placeholder="First Name"]`, { timeout: 5000 });
-                await this.curPage.keyboard.press('Tab');
-                await this.curPage.keyboard.type(this.firstNme, { delay: Math.floor(Math.random() * (20 - 10) + 10) });
+                await this.curPage.$eval('input[placeholder="First Name"]', (el, firstName) => el.value = firstName, this.firstNme);
+                // await this.curPage.keyboard.press('Tab');
+                // await this.curPage.keyboard.type(this.firstNme, { delay: Math.floor(Math.random() * (20 - 10) + 10) });
                 console.log(chalk.green(`* ${chalk.magenta(`[Task ${this.taskNum}]`)} First name submitted!`));
             } catch(err) {
                 console.log(chalk.red(`* ${chalk.magenta(`[Task ${this.taskNum}]`)} Error while submitting first name!`));
                 await this.curPage.close();
             };
-
+            
             // Attempt to submit last name
             try {
                 console.log(chalk.yellow(`* ${chalk.magenta(`[Task ${this.taskNum}]`)} Submitting last name...`));
                 await this.curPage.waitForSelector(`[placeholder="Last Name"]`, { timeout: 5000 });
-                await this.curPage.keyboard.press('Tab');
-                await this.curPage.keyboard.type(this.lastNme, { delay: Math.floor(Math.random() * (20 - 10) + 10) });
+                await this.curPage.$eval('input[placeholder="Last Name"]', (el, lastName) => el.value = lastName, this.lastNme);
+                // await this.curPage.keyboard.press('Tab');
+                // await this.curPage.keyboard.type(this.lastNme, { delay: Math.floor(Math.random() * (20 - 10) + 10) });
                 console.log(chalk.green(`* ${chalk.magenta(`[Task ${this.taskNum}]`)} Last name submitted!`));
             } catch(err) {
                 console.log(chalk.red(`* ${chalk.magenta(`[Task ${this.taskNum}]`)} Error while submitting last name!`));
                 await this.curPage.close();
             };
-
+            
             // Attempt to submit dob
             try {
                 console.log(chalk.yellow(`* ${chalk.magenta(`[Task ${this.taskNum}]`)} Submitting date of birth...`));
                 await this.curPage.waitForXPath('/html/body/div[4]/div/div/div/div[5]/form/div[5]/input', { timeout: 5000 });
-                await this.curPage.keyboard.press('Tab');
-                secondPos = await this.humanClick(this.curPage, '/html/body/div[4]/div/div/div/div[5]/form/div[5]/input', firstPos);
+                secondPos = await this.humanClick(this.curPage, '/html/body/div[4]/div/div/div/div[5]/form/div[5]/input', { x: 0, y: 0 });
                 await this.curPage.keyboard.type(this.dateOfBrth, { delay: Math.floor(Math.random() * (20 - 10) + 10) });
                 console.log(chalk.green(`* ${chalk.magenta(`[Task ${this.taskNum}]`)} Date of birth submitted!`));
             } catch(err) {
@@ -1068,7 +1052,7 @@ class NikeGen {
             
             // Choose Gender
             try {
-                thirdPos = await this.humanClick(this.curPage, this.genderArr[Math.floor(Math.random() * (this.genderArr.length - 0) + 0)], secondPos);
+                thirdPos = await this.humanClick(this.curPage, this.genderArr[Math.floor(Math.random() * (this.genderArr.length - 0) + 0)], { x: 0, y: 0});
             } catch(err) {
                 console.log(chalk.red(`* ${chalk.magenta(`[Task ${this.taskNum}]`)} Failed to choose a gender!`));
                 await this.curPage.close();
