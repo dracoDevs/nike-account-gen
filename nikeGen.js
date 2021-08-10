@@ -246,7 +246,7 @@ class NikeGen {
             'value="PR"|Puerto Rico': 1,        
             'value="PT"|Portugal': 351,        
             'value="RO"|Romania': 40,        
-            'value="RU"|Russian Federation|Russia': 7,        
+            'value="RU"|Russia': 7,        
             'value="SA"|Saudi Arabia|Saudiarabia': 966,        
             'value="SE"|Sweden': 46,        
             'value="SG"|Singapore': 65,        
@@ -528,7 +528,7 @@ class NikeGen {
         };
         let elementBox = await elementHandle.boxModel();
         let middle = { x: elementBox.content[0].x + (elementBox.content[2].x - elementBox.content[0].x) / 2 + Math.random() * (50 - 0), y: elementBox.content[0].y + (elementBox.content[2].y - elementBox.content[0].y) / 2 + Math.random() * (10 - 0) };
-        if (element == '/html/body/div[3]/div/div[3]/div[2]/div/div/form/div[2]/div[4]/div/div/div/div[2]/button') middle.x -= 15;
+        if (element == '/html/body/div[3]/div/div[3]/div[2]/div/div/form/div[2]/div[4]/div/div/div/div[2]/button') middle.x -= 25;
         if (element == '/html/body/div[2]/div/div[7]/div/div/div/div/div[2]/a[1]') if (middle.y != 557) middle.y = 557;
         if (element == '/html/body/div[4]/div/div/div/div[5]/form/div[5]/input') middle.y -= 10;
         if (this.genderArr.includes(element) && this.emailType == true) middle.y;
@@ -898,6 +898,9 @@ class NikeGen {
                     this.curPage = page[0];
                 };
             };
+
+            // Genned ua remians null for time being
+            gennedUa == null;
 
             // Display the proxy in use if not local
             if (this.proxyArr != 'Local') {
