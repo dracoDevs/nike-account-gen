@@ -662,7 +662,7 @@ class NikeGen {
         await page.goto('https://www.nike.com/member/settings');
         await page.waitForSelector('[class="ncss-cta-primary-dark "]', { timeout: 5000 });
         // firstPos = await this.humanClick(page, `[class="ncss-cta-primary-dark "]`, { x: Math.random() * (this.viewWidth - 0) + 0, y: Math.random() * (this.viewHeight - 0) + 0 });
-        await cursor.click('button[class="ncss-cta-primary-dark "]')
+        await cursor.click('span[class="ncss-cta-primary-dark "]')
         await page.waitForSelector(`[aria-label="Add Mobile Number"]`, { timeout: 5000 });
         // secondPos = await this.humanClick(page, '/html/body/div[3]/div/div[3]/div[2]/div/div/form/div[2]/div[4]/div/div/div/div[2]/button', firstPos);
         await cursor.click('/html/body/div[3]/div/div[3]/div[2]/div/div/form/div[2]/div[4]/div/div/div/div[2]/button')
@@ -990,9 +990,9 @@ class NikeGen {
             try {
                 console.log(chalk.yellow(`* ${chalk.magenta(`[Task ${this.taskNum}]`)} Submitting email address...`));
                 await this.curPage.waitForSelector(`[placeholder="Email address"]`, { timeout: 5000 });
-                await this.curPage.$eval('input[placeholder="Email address"]', (el, email) => el.value = email, this.emailAddr);
-                // firstPos = await this.humanClick(this.curPage, '/html/body/div[4]/div/div/div/div[5]/form/div[1]/input', curPos);
-                // await this.curPage.keyboard.type(this.emailAddr, { delay: Math.floor(Math.random() * (20 - 10) + 10) });
+                // this.curPage.$eval('input[placeholder="Email address"]', (el, email) => el.value = email, this.emailAddr);
+                firstPos = await this.humanClick(this.curPage, '/html/body/div[4]/div/div/div/div[5]/form/div[1]/input', curPos);
+                await this.curPage.keyboard.type(this.emailAddr, { delay: Math.floor(Math.random() * (20 - 10) + 10) });
                 console.log(chalk.green(`* ${chalk.magenta(`[Task ${this.taskNum}]`)} Email has been submitted!`));
             } catch(err) {
                 console.log(chalk.red(`* ${chalk.magenta(`[Task ${this.taskNum}]`)} Error while submitting email address!`));
@@ -1003,9 +1003,9 @@ class NikeGen {
             try {
                 console.log(chalk.yellow(`* ${chalk.magenta(`[Task ${this.taskNum}]`)} Submitting password...`));
                 await this.curPage.waitForSelector('[placeholder="Password"]', { timeout: 5000 });
-                await this.curPage.$eval('input[placeholder="Password"]', (el, password) => el.value = password, this.passWrd);
-                // await this.curPage.keyboard.press('Tab');
-                // await this.curPage.keyboard.type(this.passWrd, { delay: Math.floor(Math.random() * (20 - 10) + 10) });
+                // await this.curPage.$eval('input[placeholder="Password"]', (el, password) => el.value = password, this.passWrd);
+                await this.curPage.keyboard.press('Tab');
+                await this.curPage.keyboard.type(this.passWrd, { delay: Math.floor(Math.random() * (20 - 10) + 10) });
                 console.log(chalk.green(`* ${chalk.magenta(`[Task ${this.taskNum}]`)} Password submitted!`));
             } catch(err) {
                 console.log(chalk.red(`* ${chalk.magenta(`[Task ${this.taskNum}]`)} Error while submitting password!`));
@@ -1016,9 +1016,9 @@ class NikeGen {
             try {
                 console.log(chalk.yellow(`* ${chalk.magenta(`[Task ${this.taskNum}]`)} Submitting first name...`));
                 await this.curPage.waitForSelector(`[placeholder="First Name"]`, { timeout: 5000 });
-                await this.curPage.$eval('input[placeholder="First Name"]', (el, firstName) => el.value = firstName, this.firstNme);
-                // await this.curPage.keyboard.press('Tab');
-                // await this.curPage.keyboard.type(this.firstNme, { delay: Math.floor(Math.random() * (20 - 10) + 10) });
+                // await this.curPage.$eval('input[placeholder="First Name"]', (el, firstName) => el.value = firstName, this.firstNme);
+                await this.curPage.keyboard.press('Tab');
+                await this.curPage.keyboard.type(this.firstNme, { delay: Math.floor(Math.random() * (20 - 10) + 10) });
                 console.log(chalk.green(`* ${chalk.magenta(`[Task ${this.taskNum}]`)} First name submitted!`));
             } catch(err) {
                 console.log(chalk.red(`* ${chalk.magenta(`[Task ${this.taskNum}]`)} Error while submitting first name!`));
@@ -1029,9 +1029,9 @@ class NikeGen {
             try {
                 console.log(chalk.yellow(`* ${chalk.magenta(`[Task ${this.taskNum}]`)} Submitting last name...`));
                 await this.curPage.waitForSelector(`[placeholder="Last Name"]`, { timeout: 5000 });
-                await this.curPage.$eval('input[placeholder="Last Name"]', (el, lastName) => el.value = lastName, this.lastNme);
-                // await this.curPage.keyboard.press('Tab');
-                // await this.curPage.keyboard.type(this.lastNme, { delay: Math.floor(Math.random() * (20 - 10) + 10) });
+                // await this.curPage.$eval('input[placeholder="Last Name"]', (el, lastName) => el.value = lastName, this.lastNme);
+                await this.curPage.keyboard.press('Tab');
+                await this.curPage.keyboard.type(this.lastNme, { delay: Math.floor(Math.random() * (20 - 10) + 10) });
                 console.log(chalk.green(`* ${chalk.magenta(`[Task ${this.taskNum}]`)} Last name submitted!`));
             } catch(err) {
                 console.log(chalk.red(`* ${chalk.magenta(`[Task ${this.taskNum}]`)} Error while submitting last name!`));
