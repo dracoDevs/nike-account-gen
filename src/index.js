@@ -6,7 +6,7 @@ const chalk = require('chalk');
 const mkdirp = require('mkdirp');
 const fetch = require('node-fetch');
 const Sms = require('./smsActivate.js');
-const Five = require('./5sim.js');
+const Five = require('./helpers/5sim.js');
 const decomp = require('decompress');
 const inquirer = require('inquirer');
 const ghost = require(`ghost-cursor`);
@@ -15,15 +15,7 @@ const JSSoup = require('jssoup').default;
 const setTitle = require('console-title');
 const startTasks = require('./nikeGen');
 const { Webhook, MessageBuilder } = require(`discord-webhook-node`);
-const logo =  `==
-
-██╗   ██╗███████╗███╗   ██╗ ██████╗ ███╗   ███╗     ██████╗ ███████╗███╗   ██╗
-██║   ██║██╔════╝████╗  ██║██╔═══██╗████╗ ████║    ██╔════╝ ██╔════╝████╗  ██║
-██║   ██║█████╗  ██╔██╗ ██║██║   ██║██╔████╔██║    ██║  ███╗█████╗  ██╔██╗ ██║
-╚██╗ ██╔╝██╔══╝  ██║╚██╗██║██║   ██║██║╚██╔╝██║    ██║   ██║██╔══╝  ██║╚██╗██║
- ╚████╔╝ ███████╗██║ ╚████║╚██████╔╝██║ ╚═╝ ██║    ╚██████╔╝███████╗██║ ╚████║
-  ╚═══╝  ╚══════╝╚═╝  ╚═══╝ ╚═════╝ ╚═╝     ╚═╝     ╚═════╝ ╚══════╝╚═╝  ╚═══╝                                                                                 
-==`;
+const logo =  ``;
 
 class CommandLineInterface {
 
